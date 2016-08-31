@@ -1,0 +1,21 @@
+var _user$project$Repl$under70 = function (_p0) {
+	var _p1 = _p0;
+	return _elm_lang$core$Native_Utils.cmp(_p1.age, 70) < 0;
+};
+var _user$project$Repl$t_s_o_l = {ctor: '_Tuple0'};
+var _user$project$Repl$point = {x: 3, y: 4, z: 8};
+var _user$project$Repl$over9000 = function (powerLevel) {
+	return (_elm_lang$core$Native_Utils.cmp(powerLevel, 9000) > 0) ? 'it is' : 'meh';
+};
+var _user$project$Repl$names = _elm_lang$core$Native_List.fromArray(
+	['A', 'b', 'See']);
+var _user$project$Repl$isNegative = function (n) {
+	return _elm_lang$core$Native_Utils.cmp(n, 0) < 0;
+};
+var _user$project$Repl$goodName = function (name) {
+	return (_elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$String$length(name),
+		20) < 1) ? {ctor: '_Tuple2', _0: true, _1: 'name accepted'} : {ctor: '_Tuple2', _0: false, _1: 'I hate long names'};
+};
+var _user$project$Repl$bill = {name: 'Gates', age: 57};
+var _user$project$Repl$d_e_l_t_r_o_n_3_0_3_0 = _user$project$Repl$bill;
