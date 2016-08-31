@@ -1,16 +1,53 @@
+var _user$project$Main$viewValidation = function (model) {
+	var _p0 = _elm_lang$core$Native_Utils.eq(model.password, model.passwordAgain) ? {ctor: '_Tuple2', _0: 'green', _1: 'OK'} : {ctor: '_Tuple2', _0: 'red', _1: 'Passwords do not match!'};
+	var color = _p0._0;
+	var message = _p0._1;
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$style(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'color', _1: color}
+					]))
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(message)
+			]));
+};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{content: _p0._0});
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'Name':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{name: _p1._0});
+			case 'Password':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{password: _p1._0});
+			default:
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{passwordAgain: _p1._0});
+		}
 	});
-var _user$project$Main$model = {content: ''};
-var _user$project$Main$Model = function (a) {
-	return {content: a};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {name: a, password: b, passwordAgain: c};
+	});
+var _user$project$Main$model = A3(_user$project$Main$Model, '', '', '');
+var _user$project$Main$PasswordAgain = function (a) {
+	return {ctor: 'PasswordAgain', _0: a};
 };
-var _user$project$Main$Change = function (a) {
-	return {ctor: 'Change', _0: a};
+var _user$project$Main$Password = function (a) {
+	return {ctor: 'Password', _0: a};
+};
+var _user$project$Main$Name = function (a) {
+	return {ctor: 'Name', _0: a};
 };
 var _user$project$Main$view = function (model) {
 	return A2(
@@ -23,20 +60,33 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html$input,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$placeholder('Text to reverse'),
-						_elm_lang$html$Html_Events$onInput(_user$project$Main$Change)
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$placeholder('Name'),
+						_elm_lang$html$Html_Events$onInput(_user$project$Main$Name)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
 				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
+				_elm_lang$html$Html$input,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text(
-						_elm_lang$core$String$reverse(model.content))
-					]))
+						_elm_lang$html$Html_Attributes$type$('password'),
+						_elm_lang$html$Html_Attributes$placeholder('Password'),
+						_elm_lang$html$Html_Events$onInput(_user$project$Main$Password)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$type$('password'),
+						_elm_lang$html$Html_Attributes$placeholder('Re-enter Password'),
+						_elm_lang$html$Html_Events$onInput(_user$project$Main$PasswordAgain)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_user$project$Main$viewValidation(model)
 			]));
 };
 var _user$project$Main$main = {

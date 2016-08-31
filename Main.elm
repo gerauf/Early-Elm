@@ -1,8 +1,7 @@
-import Html exposing (Html, Attribute, div, input, text)
+import Html exposing (..)
 import Html.App as Html
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
-import String
 
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
@@ -10,27 +9,53 @@ main =
 -- MODEL
 
 type alias Model =
-  { content : String }
+  { name : String
+  , password : String
+  , passwordAgain: String
+  }
 
 model : Model
 model =
-  { content = "" }
+  Model "" "" ""
 
 -- UPDATE
 
-type Msg = Change String
+type Msg =
+  Name String
+  | Password String
+  | PasswordAgain String
 
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Change newContent ->
-      { model | content = newContent }
+    Name name ->
+      { model | name = name }
+
+    Password password ->
+      { model | password = password }
+
+    PasswordAgain passwordAgain ->
+      { model | passwordAgain = passwordAgain }
+
 
 -- VIEW
 
 view : Model -> Html Msg
 view model =
   div []
-    [ input [ placeholder "Text to reverse", onInput Change] []
-    , div [] [ text (String.reverse model.content) ]
+    [ input [ type' "text", placeholder "Name", onInput Name ] []
+    , input [ type' "password", placeholder "Password", onInput Password ] []
+    , input [ type' "password", placeholder "Re-enter Password", onInput PasswordAgain ] []
+    , viewValidation model
     ]
+
+viewValidation : Model -> Html msg
+viewValidation model =
+  let
+    (color, message) =
+      if model.password == model.passwordAgain then
+        ("green", "OK")
+      else
+        ("red", "Passwords do not match!")
+  in
+    div [ style [("color", color)] ] [ text message ]
