@@ -1,14 +1,12 @@
-import Html exposing (..)
+import Html exposing (Html)
 import Html.App as App
-import Html.Events exposing (..)
-import Html.Attributes exposing (..)
-import Task
-import Http
-import Json.Decode as Json
+import Svg exposing (..)
+import Svg.Attributes exposing (..)
+import Time exposing (Time, second)
 
 main =
   App.program
-    { init = init "cats"
+    { init = init
     , view = view
     , update = update
     , subscriptions = subscriptions
@@ -16,66 +14,48 @@ main =
 
 -- MODEL
 
-type alias Model =
-  { topic : String
-  , gifUrl : String
-  }
+type alias Model = Time
 
 -- INIT
 
-init : String -> (Model, Cmd Msg)
-init topic =
-  (Model topic "waiting.gif", getRandomGiff topic)
+init : (Model, Cmd Msg)
+init =
+  (0, Cmd.none)
 
 
 -- UPDATE
 
 type Msg =
-  MorePlease
-  | UpdateTopic String
-  | FetchSucceed String
-  | FetchError Http.Error
+  Tick Time
+
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    MorePlease ->
-      (model, getRandomGiff model.topic)
-
-    UpdateTopic newTopic ->
-      (Model newTopic model.gifUrl, Cmd.none) 
-
-    FetchSucceed newUrl ->
-      (Model model.topic newUrl, Cmd.none)
-
-    FetchError error ->
-      (model, Cmd.none)
-
-
-getRandomGiff: String -> Cmd Msg
-getRandomGiff topic =
-  let url = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=" ++ topic
-  in Task.perform FetchError FetchSucceed (Http.get decodeGifUrl url)
-
-decodeGifUrl: Json.Decoder String
-decodeGifUrl =
-  Json.at ["data", "image_url"] Json.string
-
-
--- VIEW
-
-view : Model -> Html Msg
-view model =
-  div []
-    [ input [ onInput UpdateTopic] [ ]
-    , h2 [] [text model.topic]
-    , button [onClick MorePlease] [text "more please"]
-    , br [] []
-    , img [src model.gifUrl] []
-    ]
+    Tick newTime ->
+      (newTime, Cmd.none)
 
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-  Sub.none
+  Time.every second Tick
+
+-- VIEW
+
+view : Model -> Html Msg
+view model =
+  let
+    angle =
+      turns (Time.inMinutes model)
+
+    handX =
+      toString (50 + 40 * cos angle)
+
+    handY =
+      toString (50 + 40 * sin angle)
+  in
+    svg [ viewBox "0 0 100 100", width "300px" ]
+    [ circle [ cx "50", cy "50", r "45", fill "#0B79CE"] []
+    , line [ x1 "50", y1 "50", x2 handX, y2 handY, stroke "#023963"] []
+    ]
